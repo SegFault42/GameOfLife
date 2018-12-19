@@ -1,19 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <unistd.h>
-
-#define NB_COLUMN		20
-#define NB_LINE			20
-#define CELL_ALIVE		'o'
-#define CELL_DEAD		'.'
-
-#define clear()			printf("\033[H\033[J")
-#define CHECK_Y_MIN		(y - 1 > 0)
-#define CHECK_Y_PLUS	(y + 1 < NB_COLUMN)
-#define CHECK_X_MIN		(x - 1 > 0)
-#define CHECK_X_PLUS	(x + 1 < NB_LINE)
+#include "./include/common.h"
 
 uint8_t	rule(char tab[][NB_LINE], const int x, const int y)
 {
@@ -48,16 +33,8 @@ bool	dead_or_alive(char tab[][NB_LINE], const int x, const int y)
 	return (false);
 }
 
-#define MIDDLE_Y NB_COLUMN/2
-#define MIDDLE_X NB_LINE/2
-
-int	main()
+void	init_tab(char old_tab[NB_COLUMN][NB_LINE])
 {
-	char	old_tab[NB_COLUMN][NB_LINE];
-	char	new_tab[NB_COLUMN][NB_LINE];
-
-	memset(old_tab, CELL_DEAD, sizeof(old_tab));
-
 	old_tab[MIDDLE_Y][MIDDLE_X] = CELL_ALIVE;
 	old_tab[MIDDLE_Y][MIDDLE_X + 1] = CELL_ALIVE;
 	old_tab[MIDDLE_Y + 1][MIDDLE_X - 1] = CELL_ALIVE;
@@ -67,20 +44,34 @@ int	main()
 	old_tab[3][3] = CELL_ALIVE;
 	old_tab[3][4] = CELL_ALIVE;
 	old_tab[3][5] = CELL_ALIVE;
+}
+
+int	main()
+{
+	char	old_tab[NB_COLUMN][NB_LINE];
+	char	new_tab[NB_COLUMN][NB_LINE];
+
+	// Init all tab with '.'
+	memset(old_tab, CELL_DEAD, sizeof(old_tab));
+
+	// draw cells
+	init_tab(old_tab);
 
 	memcpy(new_tab, old_tab, sizeof(new_tab));
 
 	while (0x1) {
-		clear();
+		CLEAR();
 		printf("\x1b[0;0H");
+
+		// Print map
 		for (int y = 0; y < NB_COLUMN; y++) {
 			for (int x = 0; x < NB_LINE; x++) {
 				printf("%c", new_tab[y][x]);
 			}
 			printf("\n");
 		}
-	
-	
+
+		// check cells and refresh
 		for (int y = 0; y < NB_COLUMN; y++) {
 			for (int x = 0; x < NB_LINE; x++) {
 				if (dead_or_alive(old_tab, x, y) == true)
@@ -89,8 +80,11 @@ int	main()
 					new_tab[y][x] = CELL_DEAD;
 			}
 		}
+
+		// update old tab
 		memcpy(old_tab, new_tab, sizeof(old_tab));
-		usleep(50000);
+
+		usleep(80000);
 		printf("\n");
 	}
 }
