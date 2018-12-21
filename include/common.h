@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <SDL2/SDL.h>
 
 #define NB_COLUMN		50
 #define NB_LINE			50
