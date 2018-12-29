@@ -131,10 +131,11 @@ void	game_of_life(win_render *w_rend)
 	// Init all tab with '.' (DEAD CELL)
 	memset(old_tab, false, sizeof(old_tab));
 
+	// Draw custom map
 	while (true) {
 		hidScanInput();
 
-		u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+		u64 kDown = hidKeysHeld(CONTROLLER_P1_AUTO);
 		if (kDown & KEY_B)
 			break ;
 
@@ -145,6 +146,7 @@ void	game_of_life(win_render *w_rend)
 		// Draw grill
 		draw_grill(w_rend, square_size);
 
+		//Capture input
 		if (kDown & KEY_RIGHT && x < NB_LINE) {
 			x++;
 		}
@@ -170,7 +172,17 @@ void	game_of_life(win_render *w_rend)
 			++square_size;
 		}
 
-		draw_rectangle(w_rend->renderer, x * square_size, y * square_size, 0, 0xff, 0, 0xff);
+		if (kDown) {
+			SDL_Delay(50);
+		}
+
+		// Draw current postion
+		if (old_tab[y][x] = true)
+			draw_rectangle(w_rend->renderer, x * square_size, y * square_size, 0, 0xff, 0xff, 0xff);
+		else
+			draw_rectangle(w_rend->renderer, x * square_size, y * square_size, 0, 0xff, 0, 0xff);
+
+		// Draw all cell
 		for (int y = 0; y < NB_COLUMN; y++) {
 			for (int x = 0; x < NB_LINE; x++) {
 				if (old_tab[y][x] == CELL_ALIVE)
@@ -182,9 +194,9 @@ void	game_of_life(win_render *w_rend)
 		SDL_RenderPresent(w_rend->renderer);
 	}
 
-	/*init_tab(old_tab);*/
 	memcpy(new_tab, old_tab, sizeof(new_tab));
 
+	// Laucnh game of life
 	while (true) {
 		hidScanInput();
 
