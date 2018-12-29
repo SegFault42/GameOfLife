@@ -7,11 +7,14 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <SDL2/SDL.h>
+#include <switch.h>
 
-#define NB_COLUMN		WIN_HEIGHT / SQUARE_SIZE
-#define NB_LINE			WIN_WIDTH / SQUARE_SIZE
-#define CELL_ALIVE		'o'
-#define CELL_DEAD		'.'
+int square_size = 5;
+
+#define NB_COLUMN		WIN_HEIGHT / square_size
+#define NB_LINE			WIN_WIDTH / square_size
+#define CELL_ALIVE		true
+#define CELL_DEAD		false
 #define MIDDLE_Y		NB_COLUMN/2
 #define MIDDLE_X		NB_LINE/2
 

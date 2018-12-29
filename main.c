@@ -1,6 +1,6 @@
 #include "./include/common.h"
 
-static uint8_t	rule(char tab[][NB_LINE], const int x, const int y)
+static uint8_t	rule(bool tab[][NB_LINE], const int x, const int y)
 {
 	uint8_t	alive = 0;
 
@@ -17,7 +17,7 @@ static uint8_t	rule(char tab[][NB_LINE], const int x, const int y)
 	return (alive);
 }
 
-static bool	dead_or_alive(char tab[][NB_LINE], const int x, const int y)
+static bool	dead_or_alive(bool tab[][NB_LINE], const int x, const int y)
 {
 	uint8_t alive = 0;
 
@@ -106,62 +106,117 @@ static void	draw_grill(win_render *w_rend, int grid_gap)
 	}
 }
 
-void	draw_rectangle(SDL_Renderer	*renderer, int x, int y)
+void	draw_rectangle(SDL_Renderer	*renderer, int x, int y, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
 {
 		SDL_Rect	rectangle;
 
 		// -1 and +1 to fit perfectly in square
-		rectangle.w = SQUARE_SIZE - 1;
-		rectangle.h = SQUARE_SIZE - 1;
+		rectangle.w = square_size - 1;
+		rectangle.h = square_size - 1;
 		rectangle.x = x + 1;
 		rectangle.y = y + 1;
 
-		if (rectangle.y < NB_COLUMN * SQUARE_SIZE && rectangle.x < NB_LINE * SQUARE_SIZE) {
-			SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
+		if (rectangle.y < NB_COLUMN * square_size && rectangle.x < NB_LINE * square_size) {
+			SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
 			SDL_RenderFillRect(renderer, &rectangle);
 		}
 }
 
-int	main()
+void	game_of_life(win_render *w_rend)
 {
-	char		old_tab[NB_COLUMN][NB_LINE];
-	char		new_tab[NB_COLUMN][NB_LINE];
-	win_render	*w_rend = NULL;
+	bool		old_tab[NB_COLUMN][NB_LINE];
+	bool		new_tab[NB_COLUMN][NB_LINE];
+	int			x = 0, y = 0;
 
-	w_rend = graphic();
-	if (w_rend == NULL)
-		fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
-
-	// Init all tab with '.'
-	memset(old_tab, CELL_DEAD, sizeof(old_tab));
-
-	// draw cells
-	init_tab(old_tab);
-
-	memcpy(new_tab, old_tab, sizeof(new_tab));
-
-	printf("nb_column = %d, nb_lines = %d, middle_y = %d, middle_x = %d\n", NB_COLUMN, NB_LINE, MIDDLE_Y, MIDDLE_X);
+	// Init all tab with '.' (DEAD CELL)
+	memset(old_tab, false, sizeof(old_tab));
 
 	while (true) {
+		hidScanInput();
+
+		u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+		if (kDown & KEY_B)
+			break ;
+
 		// Clear screen
 		SDL_SetRenderDrawColor(w_rend->renderer, 0, 0, 0, 0xFF);
 		SDL_RenderClear(w_rend->renderer);
 
 		// Draw grill
-		draw_grill(w_rend, SQUARE_SIZE);
+		draw_grill(w_rend, square_size);
+
+		if (kDown & KEY_RIGHT && x < NB_LINE) {
+			x++;
+		}
+		else if (kDown & KEY_LEFT && x > 0) {
+			x--;
+		}
+		else if (kDown & KEY_DOWN && y < NB_COLUMN) {
+			y++;
+		}
+		else if (kDown & KEY_UP && y > 0) {
+			y--;
+		}
+		else if (kDown & KEY_A) {
+			if (old_tab[y][x] == true)
+				old_tab[y][x] = false;
+			else
+				old_tab[y][x] = true;
+		}
+		else if (kDown & KEY_L && square_size > 2) {
+			--square_size;
+		}
+		else if (kDown & KEY_R && square_size < 100) {
+			++square_size;
+		}
+
+		draw_rectangle(w_rend->renderer, x * square_size, y * square_size, 0, 0xff, 0, 0xff);
+		for (int y = 0; y < NB_COLUMN; y++) {
+			for (int x = 0; x < NB_LINE; x++) {
+				if (old_tab[y][x] == CELL_ALIVE)
+					draw_rectangle(w_rend->renderer, x * square_size, y * square_size, 0xff, 0xff, 0, 0xff);
+			}
+		}
+
+		// Render to screen
+		SDL_RenderPresent(w_rend->renderer);
+	}
+
+	/*init_tab(old_tab);*/
+	memcpy(new_tab, old_tab, sizeof(new_tab));
+
+	while (true) {
+		hidScanInput();
+
+		u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+		if (kDown & KEY_PLUS)
+			break ;
+		else if (kDown & KEY_L && square_size > 2) {
+			--square_size;
+		}
+		else if (kDown & KEY_R && square_size < 100) {
+			++square_size;
+		}
+
+		// Clear screen
+		SDL_SetRenderDrawColor(w_rend->renderer, 0, 0, 0, 0xFF);
+		SDL_RenderClear(w_rend->renderer);
+
+		// Draw grill
+		draw_grill(w_rend, square_size);
 
 		//Game of life
 		for (int y = 0; y < NB_COLUMN; y++) {
 			for (int x = 0; x < NB_LINE; x++) {
-				if (new_tab[y][x] == 'o')
-					draw_rectangle(w_rend->renderer, x * SQUARE_SIZE, y * SQUARE_SIZE);
+				if (new_tab[y][x] == CELL_ALIVE)
+					draw_rectangle(w_rend->renderer, x * square_size, y * square_size, 0xff, 0, 0, 0);
 			}
 		}
 
 		// check cells and refresh
 		for (int y = 0; y < NB_COLUMN; y++) {
 			for (int x = 0; x < NB_LINE; x++) {
-				if (dead_or_alive(old_tab, x, y) == true)
+				if (dead_or_alive(old_tab, x, y) == CELL_ALIVE)
 					new_tab[y][x] = CELL_ALIVE;
 				else
 					new_tab[y][x] = CELL_DEAD;
@@ -173,6 +228,21 @@ int	main()
 
 		// Render to screen
 		SDL_RenderPresent(w_rend->renderer);
-		SDL_Delay(50);
+		SDL_Delay(60);
 	}
+}
+
+int	main()
+{
+	win_render	*w_rend = NULL;
+
+	// Setup SDL
+	w_rend = graphic();
+	if (w_rend == NULL)
+		fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
+
+	// start game
+	while (true)
+		game_of_life(w_rend);
+
 }
