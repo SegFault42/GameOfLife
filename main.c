@@ -33,21 +33,6 @@ static bool	dead_or_alive(bool tab[][NB_LINE], const int x, const int y)
 	return (false);
 }
 
-static void	init_tab(char old_tab[NB_COLUMN][NB_LINE])
-{
-	old_tab[MIDDLE_Y][MIDDLE_X] = CELL_ALIVE;
-	old_tab[MIDDLE_Y][MIDDLE_X + 1] = CELL_ALIVE;
-	old_tab[MIDDLE_Y + 1][MIDDLE_X - 1] = CELL_ALIVE;
-	old_tab[MIDDLE_Y + 1][MIDDLE_X] = CELL_ALIVE;
-	old_tab[MIDDLE_Y + 2][MIDDLE_X] = CELL_ALIVE;
-}
-
-typedef struct		win_render
-{
-	SDL_Window		*window;
-	SDL_Renderer	*renderer;
-}					win_render;
-
 static win_render	*graphic()
 {
 	win_render	*w_rend = NULL;
@@ -122,20 +107,18 @@ void	draw_rectangle(SDL_Renderer	*renderer, int x, int y, uint8_t red, uint8_t g
 		}
 }
 
-void	game_of_life(win_render *w_rend)
+void	create_map(bool old_tab[][NB_LINE], win_render *w_rend)
 {
-	bool		old_tab[NB_COLUMN][NB_LINE];
-	bool		new_tab[NB_COLUMN][NB_LINE];
-	int			x = 0, y = 0;
-
-	// Init all tab with '.' (DEAD CELL)
-	memset(old_tab, false, sizeof(old_tab));
+	int	x = 0, y = 0;
 
 	// Draw custom map
 	while (true) {
 		hidScanInput();
 
-		u64 kDown = hidKeysHeld(CONTROLLER_P1_AUTO);
+		u64 kHeld = hidKeysHeld(CONTROLLER_P1_AUTO);
+		u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+
+		// quit map editor
 		if (kDown & KEY_B)
 			break ;
 
@@ -147,37 +130,31 @@ void	game_of_life(win_render *w_rend)
 		draw_grill(w_rend, square_size);
 
 		//Capture input
-		if (kDown & KEY_RIGHT && x < NB_LINE) {
+		if (kHeld & KEY_RIGHT && x < NB_LINE) {
 			x++;
-		}
-		else if (kDown & KEY_LEFT && x > 0) {
+		} else if (kHeld & KEY_LEFT && x > 0) {
 			x--;
-		}
-		else if (kDown & KEY_DOWN && y < NB_COLUMN) {
+		} else if (kHeld & KEY_DOWN && y < NB_COLUMN) {
 			y++;
-		}
-		else if (kDown & KEY_UP && y > 0) {
+		} else if (kHeld & KEY_UP && y > 0) {
 			y--;
-		}
-		else if (kDown & KEY_A) {
+		} else if (kDown & KEY_A) {
 			if (old_tab[y][x] == true)
 				old_tab[y][x] = false;
 			else
 				old_tab[y][x] = true;
-		}
-		else if (kDown & KEY_L && square_size > 2) {
+		} else if (kHeld & KEY_L && square_size > 5) {
 			--square_size;
-		}
-		else if (kDown & KEY_R && square_size < 100) {
+		} else if (kHeld & KEY_R && square_size < 100) {
 			++square_size;
 		}
 
-		if (kDown) {
-			SDL_Delay(50);
+		if (kHeld) {
+			SDL_Delay(100);
 		}
 
-		// Draw current postion
-		if (old_tab[y][x] = true)
+		// Draw cell on current postion
+		if (old_tab[y][x] == CELL_ALIVE)
 			draw_rectangle(w_rend->renderer, x * square_size, y * square_size, 0, 0xff, 0xff, 0xff);
 		else
 			draw_rectangle(w_rend->renderer, x * square_size, y * square_size, 0, 0xff, 0, 0xff);
@@ -193,6 +170,17 @@ void	game_of_life(win_render *w_rend)
 		// Render to screen
 		SDL_RenderPresent(w_rend->renderer);
 	}
+}
+
+void	game_of_life(win_render *w_rend)
+{
+	bool		old_tab[NB_COLUMN][NB_LINE];
+	bool		new_tab[NB_COLUMN][NB_LINE];
+
+	// Init all tab with '.' (DEAD CELL)
+	memset(old_tab, false, sizeof(old_tab));
+
+	create_map(old_tab, w_rend);
 
 	memcpy(new_tab, old_tab, sizeof(new_tab));
 
@@ -201,12 +189,14 @@ void	game_of_life(win_render *w_rend)
 		hidScanInput();
 
 		u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+		u64 kHeld = hidKeysHeld(CONTROLLER_P1_AUTO);
+
 		if (kDown & KEY_PLUS)
 			break ;
-		else if (kDown & KEY_L && square_size > 2) {
+		else if (kHeld & KEY_L && square_size > 2) {
 			--square_size;
 		}
-		else if (kDown & KEY_R && square_size < 100) {
+		else if (kHeld & KEY_R && square_size < 100) {
 			++square_size;
 		}
 

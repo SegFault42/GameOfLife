@@ -30,4 +30,11 @@ int square_size = 5;
 
 #define SQUARE_SIZE 5
 
+typedef struct		win_render
+{
+	SDL_Window		*window;
+	SDL_Renderer	*renderer;
+}					win_render;
+
+
 #endif
