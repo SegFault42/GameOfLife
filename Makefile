@@ -31,14 +31,14 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	hello
 BUILD		:=	build
-SOURCES		:=	.
-INCLUDES	:=	.
+SOURCES		:=	srcs
+INCLUDES	:=	include
 #DATA		:=	data
 EXEFS_SRC	:=	exefs_src
 
-APP_TITLE	:= Hello World
-APP_AUTHOR 	:= vgmoose
-APP_VERSION 	:= 1.0
+APP_TITLE	:= GameOfLife
+APP_AUTHOR 	:= SegFault42
+APP_VERSION 	:= 0.1
 #ICON		:= res/icon.jpg
 #APP_TITLEID := is the titleID of the app stored in the .nacp file (Optional)
 

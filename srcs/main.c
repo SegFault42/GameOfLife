@@ -1,6 +1,6 @@
-#include "./include/common.h"
+#include "common.h"
 
-static uint8_t	rule(bool tab[][NB_LINE], const int x, const int y)
+uint8_t	rule(bool tab[][NB_LINE], const int x, const int y)
 {
 	uint8_t	alive = 0;
 
@@ -17,7 +17,7 @@ static uint8_t	rule(bool tab[][NB_LINE], const int x, const int y)
 	return (alive);
 }
 
-static bool	dead_or_alive(bool tab[][NB_LINE], const int x, const int y)
+bool	dead_or_alive(bool tab[][NB_LINE], const int x, const int y)
 {
 	uint8_t alive = 0;
 
@@ -234,7 +234,7 @@ void	game_of_life(win_render *w_rend)
 	}
 }
 
-int	main()
+int	main(void)
 {
 	win_render	*w_rend = NULL;
 

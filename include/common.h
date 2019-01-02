@@ -9,7 +9,12 @@
 #include <SDL2/SDL.h>
 #include <switch.h>
 
+//#include "gameoflife.h"
+
 int square_size = 5;
+
+#define WIN_WIDTH	1280
+#define WIN_HEIGHT	720
 
 #define NB_COLUMN		WIN_HEIGHT / square_size
 #define NB_LINE			WIN_WIDTH / square_size
@@ -25,9 +30,6 @@ int square_size = 5;
 #define CHECK_X_MIN		(x - 1 > 0)
 #define CHECK_X_PLUS	(x + 1 < NB_LINE)
 
-#define WIN_WIDTH	1280
-#define WIN_HEIGHT	720
-
 #define SQUARE_SIZE 5
 
 typedef struct		win_render
@@ -35,6 +37,5 @@ typedef struct		win_render
 	SDL_Window		*window;
 	SDL_Renderer	*renderer;
 }					win_render;
-
 
 #endif
