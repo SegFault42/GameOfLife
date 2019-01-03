@@ -1,9 +1,0 @@
-#ifndef GAMEOFLIFE_H
-#define GAMEOFLIFE_H
-
-#include "common.h"
-
-bool	dead_or_alive(bool tab[][NB_LINE], const int x, const int y);
-uint8_t	rule(bool tab[][NB_LINE], const int x, const int y);
-
-#endif
