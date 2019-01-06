@@ -15,6 +15,7 @@ int	main(void)
 
 	// start game
 	while (true)
+		/*main_menu(w_rend);*/
 		game_of_life(w_rend);
 
 }

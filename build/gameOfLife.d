@@ -44,6 +44,8 @@ gameOfLife.o: /home/segfault42/Documents/GameOfLife/srcs/gameOfLife.c \
  /opt/devkitpro/portlibs/switch/include/SDL2/SDL_system.h \
  /opt/devkitpro/portlibs/switch/include/SDL2/SDL_timer.h \
  /opt/devkitpro/portlibs/switch/include/SDL2/SDL_version.h \
+ /opt/devkitpro/portlibs/switch/include/SDL2/SDL_ttf.h \
+ /opt/devkitpro/portlibs/switch/include/SDL2/SDL.h \
  /opt/devkitpro/libnx/include/switch.h \
  /opt/devkitpro/libnx/include/switch/types.h \
  /opt/devkitpro/libnx/include/switch/result.h \
@@ -138,7 +140,8 @@ gameOfLife.o: /home/segfault42/Documents/GameOfLife/srcs/gameOfLife.c \
  /opt/devkitpro/libnx/include/switch/runtime/devices/socket.h \
  /home/segfault42/Documents/GameOfLife/include/gameoflife.h \
  /home/segfault42/Documents/GameOfLife/include/common.h \
- /home/segfault42/Documents/GameOfLife/include/graphic.h
+ /home/segfault42/Documents/GameOfLife/include/graphic.h \
+ /home/segfault42/Documents/GameOfLife/include/draw.h
 
 /home/segfault42/Documents/GameOfLife/include/common.h:
 
@@ -229,6 +232,10 @@ gameOfLife.o: /home/segfault42/Documents/GameOfLife/srcs/gameOfLife.c \
 /opt/devkitpro/portlibs/switch/include/SDL2/SDL_timer.h:
 
 /opt/devkitpro/portlibs/switch/include/SDL2/SDL_version.h:
+
+/opt/devkitpro/portlibs/switch/include/SDL2/SDL_ttf.h:
+
+/opt/devkitpro/portlibs/switch/include/SDL2/SDL.h:
 
 /opt/devkitpro/libnx/include/switch.h:
 
@@ -419,3 +426,5 @@ gameOfLife.o: /home/segfault42/Documents/GameOfLife/srcs/gameOfLife.c \
 /home/segfault42/Documents/GameOfLife/include/common.h:
 
 /home/segfault42/Documents/GameOfLife/include/graphic.h:
+
+/home/segfault42/Documents/GameOfLife/include/draw.h:

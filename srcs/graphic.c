@@ -1,4 +1,10 @@
 #include "graphic.h"
+#include "draw.h"
+
+/*void	main_menu(win_render *w_rend)*/
+/*{*/
+	/*draw_entry(w_rend);*/
+/*}*/
 
 win_render	*graphic()
 {
@@ -42,38 +48,6 @@ end:
 	return (w_rend);
 }
 
-void	draw_grill(win_render *w_rend, int grid_gap)
-{
-	// Draw grill in green
-	SDL_SetRenderDrawColor(w_rend->renderer, 0x33, 0x33, 0, 0x33);
-
-	/*// Draw vertical lines*/
-	for (int x = 0; x < WIN_WIDTH; x += grid_gap) {
-		SDL_RenderDrawLine(w_rend->renderer, x, 0, x, WIN_HEIGHT);
-	}
-
-	// Draw horizontal lines
-	for (int y = 0; y < WIN_HEIGHT; y += grid_gap) {
-		SDL_RenderDrawLine(w_rend->renderer, 0, y, WIN_WIDTH, y);
-	}
-}
-
-void	draw_rectangle(SDL_Renderer	*renderer, int x, int y, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
-{
-		SDL_Rect	rectangle;
-
-		// -1 and +1 to fit perfectly in square
-		rectangle.w = square_size - 1;
-		rectangle.h = square_size - 1;
-		rectangle.x = x + 1;
-		rectangle.y = y + 1;
-
-		if (rectangle.y < NB_COLUMN * square_size && rectangle.x < NB_LINE * square_size) {
-			SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
-			SDL_RenderFillRect(renderer, &rectangle);
-		}
-}
-
 void	create_map(bool old_tab[][NB_LINE], win_render *w_rend)
 {
 	int	x = 0, y = 0;
@@ -94,7 +68,7 @@ void	create_map(bool old_tab[][NB_LINE], win_render *w_rend)
 		SDL_RenderClear(w_rend->renderer);
 
 		// Draw grill
-		draw_grill(w_rend, square_size);
+		draw_grill(w_rend->renderer, square_size);
 
 		//Capture input
 		if (kHeld & KEY_RIGHT && x < NB_LINE) {
@@ -117,7 +91,7 @@ void	create_map(bool old_tab[][NB_LINE], win_render *w_rend)
 		}
 
 		if (kHeld) {
-			SDL_Delay(100);
+			SDL_Delay(200);
 		}
 
 		// Draw cell on current postion
@@ -136,5 +110,6 @@ void	create_map(bool old_tab[][NB_LINE], win_render *w_rend)
 
 		// Render to screen
 		SDL_RenderPresent(w_rend->renderer);
+		draw_entry(w_rend->renderer, 100, 100, "Hello");
 	}
 }

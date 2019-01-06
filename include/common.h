@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <switch.h>
 
 extern int	square_size;
@@ -34,8 +35,7 @@ typedef struct			win_render
 {
 	SDL_Window			*window;
 	SDL_Renderer		*renderer;
+	SDL_Surface			*window_surface;
 }						win_render;
-
-void	draw_grill(win_render *w_rend, int grid_gap);
 
 #endif

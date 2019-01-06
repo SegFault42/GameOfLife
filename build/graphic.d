@@ -45,6 +45,8 @@ graphic.o: /home/segfault42/Documents/GameOfLife/srcs/graphic.c \
  /opt/devkitpro/portlibs/switch/include/SDL2/SDL_system.h \
  /opt/devkitpro/portlibs/switch/include/SDL2/SDL_timer.h \
  /opt/devkitpro/portlibs/switch/include/SDL2/SDL_version.h \
+ /opt/devkitpro/portlibs/switch/include/SDL2/SDL_ttf.h \
+ /opt/devkitpro/portlibs/switch/include/SDL2/SDL.h \
  /opt/devkitpro/libnx/include/switch.h \
  /opt/devkitpro/libnx/include/switch/types.h \
  /opt/devkitpro/libnx/include/switch/result.h \
@@ -136,7 +138,8 @@ graphic.o: /home/segfault42/Documents/GameOfLife/srcs/graphic.c \
  /opt/devkitpro/libnx/include/switch/runtime/devices/usb_comms.h \
  /opt/devkitpro/libnx/include/switch/runtime/devices/fs_dev.h \
  /opt/devkitpro/libnx/include/switch/runtime/devices/romfs_dev.h \
- /opt/devkitpro/libnx/include/switch/runtime/devices/socket.h
+ /opt/devkitpro/libnx/include/switch/runtime/devices/socket.h \
+ /home/segfault42/Documents/GameOfLife/include/draw.h
 
 /home/segfault42/Documents/GameOfLife/include/graphic.h:
 
@@ -229,6 +232,10 @@ graphic.o: /home/segfault42/Documents/GameOfLife/srcs/graphic.c \
 /opt/devkitpro/portlibs/switch/include/SDL2/SDL_timer.h:
 
 /opt/devkitpro/portlibs/switch/include/SDL2/SDL_version.h:
+
+/opt/devkitpro/portlibs/switch/include/SDL2/SDL_ttf.h:
+
+/opt/devkitpro/portlibs/switch/include/SDL2/SDL.h:
 
 /opt/devkitpro/libnx/include/switch.h:
 
@@ -413,3 +420,5 @@ graphic.o: /home/segfault42/Documents/GameOfLife/srcs/graphic.c \
 /opt/devkitpro/libnx/include/switch/runtime/devices/romfs_dev.h:
 
 /opt/devkitpro/libnx/include/switch/runtime/devices/socket.h:
+
+/home/segfault42/Documents/GameOfLife/include/draw.h:

@@ -29,7 +29,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #     - icon.jpgK
 #     - <libnx folder>/default_icon.jpg
 #---------------------------------------------------------------------------------
-TARGET		:=	hello
+TARGET		:=	GameOfLife
 BUILD		:=	build
 SOURCES		:=	srcs
 INCLUDES	:=	include

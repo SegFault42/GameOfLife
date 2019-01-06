@@ -1,6 +1,7 @@
 #include "common.h"
 #include "gameoflife.h"
 #include "graphic.h"
+#include "draw.h"
 
 uint8_t	rule(bool tab[][NB_LINE], const int x, const int y)
 {
@@ -68,7 +69,7 @@ void	game_of_life(win_render *w_rend)
 		SDL_RenderClear(w_rend->renderer);
 
 		// Draw grill
-		draw_grill(w_rend, square_size);
+		draw_grill(w_rend->renderer, square_size);
 
 		//Game of life
 		for (int y = 0; y < NB_COLUMN; y++) {
