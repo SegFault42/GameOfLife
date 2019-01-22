@@ -1,21 +1,29 @@
 #include "common.h"
 #include "graphic.h"
 #include "gameoflife.h"
+#include "nxui.h"
 
 int	square_size = 5;
 
 int	main(void)
 {
-	win_render	*w_rend = NULL;
+	NXUI_graphic	*graphic = NULL;
 
 	// Setup SDL
-	w_rend = graphic();
-	if (w_rend == NULL)
+	graphic = NXUI_init();
+	if (graphic == NULL) {
 		fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
+		return (-1);
+	}
 
+	NXUI_layout1(graphic->renderer, "Game of life");
+	SDL_RenderPresent(graphic->renderer);
 	// start game
 	while (true)
-		/*main_menu(w_rend);*/
-		game_of_life(w_rend);
+	{}
+		/*main_menu(graphic);*/
+		/*game_of_life(graphic);*/
 
+
+	NXUI_de_init(graphic);
 }

@@ -33,8 +33,9 @@ TARGET		:=	GameOfLife
 BUILD		:=	build
 SOURCES		:=	srcs
 INCLUDES	:=	include
-#DATA		:=	data
+DATA		:=	data
 EXEFS_SRC	:=	exefs_src
+ROMFS		:=	romfs
 
 APP_TITLE	:= GameOfLife
 APP_AUTHOR 	:= SegFault42
@@ -51,18 +52,19 @@ ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIE -ftls-model=local-exec
 CFLAGS	:=	-g -Wall -O3 -ffunction-sections \
 			$(ARCH) $(DEFINES)
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__
+CFLAGS	+=	$(INCLUDE) -D__SWITCH__ #-DDEBUG #Uncomment for print debug with nxlink -s
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:=  	-lSDL2_ttf -lSDL2_image -lSDL2_mixer -lSDL2 \
+#LIBS	:= -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lpng -ljpeg `sdl2-config --libs` `freetype-config --libs` -lnx
+LIBS	:=	-lSDL2_ttf -lSDL2_image -lSDL2_mixer -lSDL2 \
 		-lpng -lz -ljpeg \
 		-lglad -lEGL -lglapi -ldrm_nouveau -lstdc++ \
 		-lvorbisidec -logg -lmpg123 -lmodplug \
-		-lnx -lm -lfreetype -lbz2
+		-lnx -lm `freetype-config --libs` -lbz2
 
 
 
@@ -142,6 +144,10 @@ endif
 
 ifneq ($(APP_TITLEID),)
 	export NACPFLAGS += --titleid=$(APP_TITLEID)
+endif
+
+ifneq ($(ROMFS),)
+	export NROFLAGS += --romfsdir=$(CURDIR)/$(ROMFS)
 endif
 
 .PHONY: $(BUILD) clean all

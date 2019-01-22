@@ -10,6 +10,10 @@
 #include <SDL2/SDL_ttf.h>
 #include <switch.h>
 
+#ifdef DEBUG
+#include <sys/socket.h>
+#endif
+
 extern int	square_size;
 
 #define WIN_WIDTH		1280
